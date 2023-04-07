@@ -5,7 +5,7 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-export ORG_NAME=${ORG_NAME:-teslagov}
+export ORG_NAME=${ORG_NAME:-dknmz}
 export IMAGE_NAME=${IMAGE_NAME:-jwt-nginx}
 export FULL_IMAGE_NAME=${ORG_NAME}/${IMAGE_NAME}
 export CONTAINER_NAME_PREFIX=${CONTAINER_NAME_PREFIX:-jwt-nginx-test}
