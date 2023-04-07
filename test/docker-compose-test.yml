@@ -4,21 +4,20 @@ services:
 
   nginx:
     container_name: ${CONTAINER_NAME_PREFIX}
-    build:
-      context: .
-      dockerfile: Dockerfile-test-nginx
-      args:
-        BASE_IMAGE: ${FULL_IMAGE_NAME}:${NGINX_VERSION:-latest}
+    image: ${FULL_IMAGE_NAME}:${NGINX_VERSION:-latest}
     logging:
       driver: ${LOG_DRIVER:-journald}
+    volumes:
+       - ./test.conf:/etc/nginx/conf.d/test.conf
+       - ./rsa_key_2048-pub.pem:/etc/nginx/rsa-key.conf
 
   runner:
     container_name: ${CONTAINER_NAME_PREFIX}-runner
     build:
       context: .
       dockerfile: Dockerfile-test-runner
-    environment:
-      BASE_IMAGE: ${FULL_IMAGE_NAME}:${NGINX_VERSION:-latest}
+    volumes:
+      - ./test.sh:/test.sh
     
     depends_on:
       - nginx

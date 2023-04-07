@@ -14,8 +14,6 @@ To build the Docker image, start NGINX, and run our Bash test against it, run
 
 When you make a change to the module or the NGINX test config, run `./scripts.sh rebuild_nginx` to rebuild the NGINX Docker image.
 
-When you make a change to `test.sh`, run `./scripts.sh rebuild_test_runner test` to rebuild the test runner image and run the tests.
-
 The `./scripts.sh` file contains multiple commands to make things easy:
 
 | Command               | Description                                                       |
