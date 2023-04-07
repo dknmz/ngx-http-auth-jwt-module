@@ -80,7 +80,6 @@ This module requires several new `nginx.conf` directives, which can be specified
 | `auth_jwt_loginurl`        | The URL to redirect to if `auth_jwt_redirect` is enabled and authentication fails.                                 |
 | `auth_jwt_enabled`         | Set to "on" to enable JWT checking.                                                                                |
 | `auth_jwt_algorithm`       | The algorithm to use. One of: HS256, HS384, HS512, RS256, RS384, RS512                                             |
-| `auth_jwt_extract_sub`     | Set to "on" to extract the `sub` claim (e.g. user id) from the JWT and into the `x-userid` header on the response. |
 | `auth_jwt_use_keyfile`     | Set to "on" to read the key from a file rather than from the `auth_jwt_key` directive.                             |
 | `auth_jwt_keyfile_path`    | Set to the path from which the key should be read when `auth_jwt_use_keyfile` is enabled.                          |
 
@@ -124,13 +123,6 @@ By default the authorization header is used to provide a JWT for validation. How
 auth_jwt_validation_type COOKIE=jwt;
 ```
 
-By default, the module will attempt to extract the `sub` claim (e.g. the user's id) from the JWT. If successful, the 
-value will be set in the `x-userid` HTTP header. An error will be logged if this option is enabled and the JWT does not 
-contain the `sub` claim. You may disable this option as follows:
-
-```
-auth_jwt_extract_sub off
-```
 
 ## Contributing
 
