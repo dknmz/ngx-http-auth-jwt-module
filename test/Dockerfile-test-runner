@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.16
 COPY test.sh .
 RUN apk add curl bash
 CMD ["./test.sh"]

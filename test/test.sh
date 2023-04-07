@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 RED='\033[01;31m'
 GREEN='\033[01;32m'
 NONE='\033[00m'
@@ -8,7 +10,7 @@ run_test () {
   local name=$1
   local path=$2
   local expect=$3
-  local extra=$4
+  local extra=${4:-}
 
   cmd="curl -X GET -o /dev/null --silent --head --write-out '%{http_code}' http://nginx:8000${path} -H 'cache-control: no-cache' $extra"
   result=$(eval ${cmd})
@@ -134,5 +136,16 @@ main() {
     return 1
   fi
 }
+
+echo "Waiting for test server to be ready..."
+curl http://nginx:8000/ping \
+  --silent \
+  --retry 2 \
+  --verbose \
+  --retry-all-errors \
+  --connect-timeout 2 \
+  --max-time 10 \
+  --retry-delay 1
+echo "Ready!"
 
 main '$@'
