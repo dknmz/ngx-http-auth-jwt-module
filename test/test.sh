@@ -40,24 +40,13 @@ main() {
            '200'
   num_failed=$((${num_failed} + $?)); num_tests=$((${num_tests} + 1));
 
-  run_test 'when auth enabled with default algorithm and no JWT in Authorization header, returns 302' \
+  run_test 'when auth enabled with default algorithm and no JWT in Authorization header, returns 401' \
            '/secure/auth-header/default' \
-           '302'
+           '401'
   num_failed=$((${num_failed} + $?)); num_tests=$((${num_tests} + 1));
 
-  run_test 'when auth enabled with default algorithm with no redirect and Authroization header missing Bearer, should return 401' \
-           '/secure/auth-header/default/no-redirect' \
-           '401' \
-           '--header "Authorization: X"'
-  num_failed=$((${num_failed} + $?)); num_tests=$((${num_tests} + 1));
-
-  run_test 'when auth enabled with default algorithm and no JWT cookie, returns 302' \
+  run_test 'when auth enabled with default algorithm and no JWT cookie, returns 401' \
            '/secure/cookie/default' \
-           '302'
-  num_failed=$((${num_failed} + $?)); num_tests=$((${num_tests} + 1));
-
-  run_test 'when auth enabled with default algorithm with no redirect and no JWT cookie, should return 401' \
-           '/secure/cookie/default/no-redirect' \
            '401'
   num_failed=$((${num_failed} + $?)); num_tests=$((${num_tests} + 1));
 
@@ -111,7 +100,7 @@ main() {
 
   run_test 'when auth enabled with RS256 algorithm via file and invalid JWT in Authorization header, returns 401' \
            '/secure/auth-header/rs256/file' \
-           '302' \
+           '401' \
            '--header "Authorization: Bearer ${JWT_RS256_INVALID}"'
   num_failed=$((${num_failed} + $?)); num_tests=$((${num_tests} + 1));
 

@@ -1,6 +1,8 @@
-# Intro
+# ngx_http_auth_jwt_module
 
-This is an NGINX module to check for a valid JWT and proxy to an upstream server or redirect to a login page.
+This is an NGINX module to secure the server by authenticing with JSON Web Tokens.
+
+Note that this has *no* relation to the JWT module provided by NGINX Plus.
 
 ## Building and testing
 
@@ -76,8 +78,6 @@ This module requires several new `nginx.conf` directives, which can be specified
 | Directive                  | Description                                                                                                        |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `auth_jwt_key`             | The key to use to decode/verify the JWT -- see below.                                                              |
-| `auth_jwt_redirect`        | Set to "on" to redirect to `auth_jwt_loginurl` if authentication fails.                                            |
-| `auth_jwt_loginurl`        | The URL to redirect to if `auth_jwt_redirect` is enabled and authentication fails.                                 |
 | `auth_jwt_enabled`         | Set to "on" to enable JWT checking.                                                                                |
 | `auth_jwt_algorithm`       | The algorithm to use. One of: HS256, HS384, HS512, RS256, RS384, RS512                                             |
 | `auth_jwt_use_keyfile`     | Set to "on" to read the key from a file rather than from the `auth_jwt_key` directive.                             |
@@ -109,13 +109,8 @@ auth_jwt_use_keyfile on;
 auth_jwt_keyfile_path "/path/to/pub_key.pem";
 ```
 
-A typical use would be to specify the key and login URL at the `http` level, and then only turn JWT authentication on for the locations which you want to secure. Unauthorized requests result in a 302 "Moved Temporarily" response with the `Location` header set to the URL specified in the `auth_jwt_loginurl` directive, and a querystring parameter `return_url` whose value is the current / attempted URL.
+A typical use would be to specify the key and login URL at the `http` level, and then only turn JWT authentication on for the locations which you want to secure.
 
-If you prefer to return `401 Unauthorized` rather than redirect, you may turn `auth_jwt_redirect` off:
-
-```
-auth_jwt_redirect off;
-```
 
 By default the authorization header is used to provide a JWT for validation. However, you may use the `auth_jwt_validation_type` configuration to specify the name of a cookie that provides the JWT:
 
