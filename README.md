@@ -81,7 +81,6 @@ This module requires several new `nginx.conf` directives, which can be specified
 | `auth_jwt_enabled`         | Set to "on" to enable JWT checking.                                                                                |
 | `auth_jwt_algorithm`       | The algorithm to use. One of: HS256, HS384, HS512, RS256, RS384, RS512                                             |
 | `auth_jwt_extract_sub`     | Set to "on" to extract the `sub` claim (e.g. user id) from the JWT and into the `x-userid` header on the response. |
-| `auth_jwt_validate_email`  | Set to "on" to extract the `emailAddress` claim from the JWT and into the `x-email` header on the response.        |
 | `auth_jwt_use_keyfile`     | Set to "on" to read the key from a file rather than from the `auth_jwt_key` directive.                             |
 | `auth_jwt_keyfile_path`    | Set to the path from which the key should be read when `auth_jwt_use_keyfile` is enabled.                          |
 
@@ -131,15 +130,6 @@ contain the `sub` claim. You may disable this option as follows:
 
 ```
 auth_jwt_extract_sub off
-```
-
-By default, the module will attempt to validate the email address field of the JWT, then set the x-email header of the
-session, and will log an error if it isn't found. To disable this behavior, for instance if you are using a different
-user identifier property such as `sub`, set `auth_jwt_validate_email` to the value `off`. _Note that this flag may be 
-renamed to `auth_jwt_extract_email` in a future release._ You may disable this option as follows:
-
-```
-auth_jwt_validate_email off;
 ```
 
 ## Contributing
