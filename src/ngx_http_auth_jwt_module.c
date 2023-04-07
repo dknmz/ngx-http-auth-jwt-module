@@ -27,6 +27,7 @@ typedef struct {
 	ngx_str_t    auth_jwt_algorithm;
 	ngx_str_t    auth_jwt_keyfile_path;
 	ngx_flag_t   auth_jwt_use_keyfile;
+	ngx_int_t    auth_jwt_failure_status;
 	// Private field for keyfile data
 	ngx_str_t    _auth_jwt_keyfile;
 } ngx_http_auth_jwt_loc_conf_t;
@@ -79,6 +80,13 @@ static ngx_command_t ngx_http_auth_jwt_commands[] = {
 		ngx_conf_set_flag_slot,
 		NGX_HTTP_LOC_CONF_OFFSET,
 		offsetof(ngx_http_auth_jwt_loc_conf_t, auth_jwt_use_keyfile),
+		NULL },
+
+	{ ngx_string("auth_jwt_failure_status"),
+		NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
+		ngx_conf_set_num_slot,
+		NGX_HTTP_LOC_CONF_OFFSET,
+		offsetof(ngx_http_auth_jwt_loc_conf_t, auth_jwt_failure_status),
 		NULL },
 
 	ngx_null_command
@@ -225,7 +233,7 @@ static ngx_int_t ngx_http_auth_jwt_handler(ngx_http_request_t *r)
 			jwt_free(jwt);
 		}
 
-		return NGX_HTTP_UNAUTHORIZED;
+		return jwtcf->auth_jwt_failure_status;
 }
 
 
@@ -261,6 +269,7 @@ ngx_http_auth_jwt_create_loc_conf(ngx_conf_t *cf)
 	// set the flag to unset
 	conf->auth_jwt_enabled = (ngx_flag_t) -1;
 	conf->auth_jwt_use_keyfile = (ngx_flag_t) -1;
+	conf->auth_jwt_failure_status = NGX_CONF_UNSET;
 
 	ngx_conf_log_error(NGX_LOG_DEBUG, cf, 0, "Created Location Configuration");
 	
@@ -319,6 +328,7 @@ ngx_http_auth_jwt_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 	ngx_conf_merge_str_value(conf->auth_jwt_validation_type, prev->auth_jwt_validation_type, "");
 	ngx_conf_merge_str_value(conf->auth_jwt_algorithm, prev->auth_jwt_algorithm, "HS256");
 	ngx_conf_merge_str_value(conf->auth_jwt_keyfile_path, prev->auth_jwt_keyfile_path, "");
+	ngx_conf_merge_value(conf->auth_jwt_failure_status, prev->auth_jwt_failure_status, 401);
 	
 	if (conf->auth_jwt_enabled == ((ngx_flag_t) -1)) 
 	{

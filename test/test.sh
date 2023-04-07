@@ -50,6 +50,16 @@ main() {
            '401'
   num_failed=$((${num_failed} + $?)); num_tests=$((${num_tests} + 1));
 
+  run_test 'when auth enabled, no token, and fail with "404 Not Found"' \
+           '/secure/cookie/fail-with-404' \
+           '404'
+  num_failed=$((${num_failed} + $?)); num_tests=$((${num_tests} + 1));
+
+  run_test 'when auth enabled, no token, and fail with "410 Gone"' \
+           '/secure/cookie/fail-with-410' \
+           '410'
+  num_failed=$((${num_failed} + $?)); num_tests=$((${num_tests} + 1));
+
   run_test 'when auth enabled with default algorithm and valid JWT cookie, returns 200' \
            '/secure/cookie/default' \
            '200' \

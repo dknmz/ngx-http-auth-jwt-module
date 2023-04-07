@@ -82,7 +82,7 @@ This module requires several new `nginx.conf` directives, which can be specified
 | `auth_jwt_algorithm`       | The algorithm to use. One of: HS256, HS384, HS512, RS256, RS384, RS512                                             |
 | `auth_jwt_use_keyfile`     | Set to "on" to read the key from a file rather than from the `auth_jwt_key` directive.                             |
 | `auth_jwt_keyfile_path`    | Set to the path from which the key should be read when `auth_jwt_use_keyfile` is enabled.                          |
-
+| `auth_jwt_failure_status`  | HTTP status to return when auth fails. Default is `401 Unauthorized`                                               |
 
 The default algorithm is `HS256`, for symmetric key validation. When using one of the `HS*` algorithms, the value for `auth_jwt_key` should be specified in binhex format. It is recommended to use at least 256 bits of data (32 pairs of hex characters or 64 characters in total) as in the example above. Note that using more than 512 bits will not increase the security. For key guidelines please see [NIST Special Publication 800-107 Recommendation for Applications Using Approved Hash Algorithms](https://csrc.nist.gov/publications/detail/sp/800-107/rev-1/final), Section 5.3.2 The HMAC Key.
 
