@@ -37,5 +37,4 @@ RUN  apt-get update \
 
 
 LABEL stage=
-LABEL maintainer="TeslaGov" email="developers@teslagov.com"
 COPY --from=build /root/build/nginx/objs/ngx_http_auth_jwt_module.so /usr/lib64/nginx/modules/
